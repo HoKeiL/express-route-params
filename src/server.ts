@@ -89,9 +89,24 @@ app.get<{numOne:string, numTwo:string}>("/add/:numOne/:numTwo",(req, res)=>{
 })
 
 app.get<{animal:string}>("/eat/:animal",(req,res)=>{
-  const animalContent = req.params.animal;
+  const animalContent:string = req.params.animal;
+
+  function isVowel(word:string):boolean {
+      const vowels:string[] = ["a", "e", "i", "o", "u","A", "E", "I", "O", "U"];
+      let startsWithVowel:boolean = false;
+  
+      for (const char of vowels) {
+        if (char == word.charAt(0)) {
+          startsWithVowel = true;
+        }
+      }
+  
+      return startsWithVowel;
+    
+  }
+  const aOrAn:string = (isVowel(req.params.animal) === true)?"an":"a";
   res.json({
-    message:`Yum yum - you ate a ${animalContent}!`
+    message:`Yum yum - you ate ${aOrAn} ${animalContent}!`
   })
 
 })
