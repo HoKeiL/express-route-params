@@ -26,7 +26,7 @@ app.get("/eat/carrot", (req, res) => {
   });
 });
 
-app.get("/echo/:exampleRouteParameter", (req, res) => {
+app.get<{exampleRouteParameter:string}>("/echo/:exampleRouteParameter", (req, res) => {
   const echoContent = req.params.exampleRouteParameter;
   res.json({
     echo: echoContent,
@@ -34,7 +34,7 @@ app.get("/echo/:exampleRouteParameter", (req, res) => {
   });
 });
 
-app.get("/multiply/:numOne/:numTwo", (req, res) => {
+app.get<{numOne:string, numTwo:string}>("/multiply/:numOne/:numTwo", (req, res) => {
   /**
    * Note that `numOne` and `numTwo` are both typed as string.
    * (Hover over with your mouse to see!)
@@ -70,6 +70,31 @@ app.get<{ name: string }>("/happy-birthday/:name", (req, res) => {
     ],
   });
 });
+
+app.get<{exampleRouteParameter:string}>("/shout/:exampleRouteParameter", (req,res)=>{
+  const shoutContent = req.params.exampleRouteParameter;
+  res.json({
+    shout:shoutContent.toUpperCase(),
+    result:`I am shouthing back to you: ${req.params.exampleRouteParameter.toUpperCase()}`
+  })
+})
+
+app.get<{numOne:string, numTwo:string}>("/add/:numOne/:numTwo",(req, res)=>{
+  const { numOne, numTwo } = req.params;
+  const addition =  parseInt(numOne) + parseInt(numTwo);
+  res.json({
+    original:`${numOne} + ${numTwo}`,
+    result:addition
+  })
+})
+
+app.get<{animal:string}>("/eat/:animal",(req,res)=>{
+  const animalContent = req.params.animal;
+  res.json({
+    message:`Yum yum - you ate a ${animalContent}!`
+  })
+
+})
 
 // using 4000 by convention, but could be changed
 const PORT_NUMBER = 4000;
