@@ -26,29 +26,35 @@ app.get("/eat/carrot", (req, res) => {
   });
 });
 
-app.get<{exampleRouteParameter:string}>("/echo/:exampleRouteParameter", (req, res) => {
-  const echoContent = req.params.exampleRouteParameter;
-  res.json({
-    echo: echoContent,
-    message: `I am echoing back to you: ${echoContent}`,
-  });
-});
+app.get<{ exampleRouteParameter: string }>(
+  "/echo/:exampleRouteParameter",
+  (req, res) => {
+    const echoContent = req.params.exampleRouteParameter;
+    res.json({
+      echo: echoContent,
+      message: `I am echoing back to you: ${echoContent}`,
+    });
+  }
+);
 
-app.get<{numOne:string, numTwo:string}>("/multiply/:numOne/:numTwo", (req, res) => {
-  /**
-   * Note that `numOne` and `numTwo` are both typed as string.
-   * (Hover over with your mouse to see!)
-   *
-   * Route params are, by default, typed as strings when they
-   * are parsed by Express.
-   */
-  const { numOne, numTwo } = req.params;
-  const multiplication = parseInt(numOne) * parseInt(numTwo);
-  res.json({
-    original: `${numOne} x ${numTwo}`,
-    result: multiplication,
-  });
-});
+app.get<{ numOne: string; numTwo: string }>(
+  "/multiply/:numOne/:numTwo",
+  (req, res) => {
+    /**
+     * Note that `numOne` and `numTwo` are both typed as string.
+     * (Hover over with your mouse to see!)
+     *
+     * Route params are, by default, typed as strings when they
+     * are parsed by Express.
+     */
+    const { numOne, numTwo } = req.params;
+    const multiplication = parseInt(numOne) * parseInt(numTwo);
+    res.json({
+      original: `${numOne} x ${numTwo}`,
+      result: multiplication,
+    });
+  }
+);
 
 /**
  * `app.get` can take a type argument.
@@ -71,45 +77,49 @@ app.get<{ name: string }>("/happy-birthday/:name", (req, res) => {
   });
 });
 
-app.get<{exampleRouteParameter:string}>("/shout/:exampleRouteParameter", (req,res)=>{
-  const shoutContent = req.params.exampleRouteParameter;
-  res.json({
-    shout:shoutContent.toUpperCase(),
-    result:`I am shouthing back to you: ${req.params.exampleRouteParameter.toUpperCase()}`
-  })
-})
-
-app.get<{numOne:string, numTwo:string}>("/add/:numOne/:numTwo",(req, res)=>{
-  const { numOne, numTwo } = req.params;
-  const addition =  parseInt(numOne) + parseInt(numTwo);
-  res.json({
-    original:`${numOne} + ${numTwo}`,
-    result:addition
-  })
-})
-
-app.get<{animal:string}>("/eat/:animal",(req,res)=>{
-  const animalContent:string = req.params.animal;
-
-  function isVowel(word:string):boolean {
-      const vowels:string[] = ["a", "e", "i", "o", "u","A", "E", "I", "O", "U"];
-      let startsWithVowel:boolean = false;
-  
-      for (const char of vowels) {
-        if (char == word.charAt(0)) {
-          startsWithVowel = true;
-        }
-      }
-  
-      return startsWithVowel;
-    
+app.get<{ exampleRouteParameter: string }>(
+  "/shout/:exampleRouteParameter",
+  (req, res) => {
+    const shoutContent = req.params.exampleRouteParameter;
+    res.json({
+      shout: shoutContent.toUpperCase(),
+      result: `I am shouthing back to you: ${req.params.exampleRouteParameter.toUpperCase()}`,
+    });
   }
-  const aOrAn:string = (isVowel(req.params.animal) === true)?"an":"a";
-  res.json({
-    message:`Yum yum - you ate ${aOrAn} ${animalContent}!`
-  })
+);
 
-})
+app.get<{ numOne: string; numTwo: string }>(
+  "/add/:numOne/:numTwo",
+  (req, res) => {
+    const { numOne, numTwo } = req.params;
+    const addition = parseInt(numOne) + parseInt(numTwo);
+    res.json({
+      original: `${numOne} + ${numTwo}`,
+      result: addition,
+    });
+  }
+);
+
+app.get<{ animal: string }>("/eat/:animal", (req, res) => {
+  const animalContent: string = req.params.animal;
+
+  function isVowel(word: string): boolean {
+    const vowels: string[] = ["a", "e", "i", "o", "u", "A", "E", "I", "O", "U"];
+    let startsWithVowel = false;
+
+    for (const char of vowels) {
+      if (char == word.charAt(0)) {
+        startsWithVowel = true;
+      }
+    }
+
+    return startsWithVowel;
+  }
+  const aOrAn: string = isVowel(req.params.animal) === true ? "an" : "a";
+  res.json({
+    message: `Yum yum - you ate ${aOrAn} ${animalContent}!`,
+  });
+});
 
 // using 4000 by convention, but could be changed
 const PORT_NUMBER = 4000;
